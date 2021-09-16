@@ -1,0 +1,23 @@
+{
+  "name": "todo-list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GokhanTurgut/todo-list.git"
+  },
+  "author": "Gokhan Turgut",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GokhanTurgut/todo-list/issues"
+  },
+  "homepage": "https://github.com/GokhanTurgut/todo-list#readme",
+  "devDependencies": {
+    "webpack": "^5.52.1",
+    "webpack-cli": "^4.8.0"
+  }
+}
