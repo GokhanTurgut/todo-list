@@ -4,10 +4,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do</title>
+    <title>My Tasks</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="header">
+        <h1>My Tasks</h1>
+    </div>
+    <div id="projects">
+        
+    </div>
+    <div id="tasks">
+        <form class="taskForm">
+            <input type="text" name="title" id="formTitle" placeholder="Title" required>
+            <input type="text" name="description" id="formDescription" placeholder="Description">
+            <label for="dueDate">Due Date:</label>
+            <input type="date" name="dueDate" id="formDueDate">
+            <label for="priority">Priority:</label>
+            <input type="radio" name="priority" id="formLowPriority" value="Low" required>
+            <label for="formLowPriority">Low</label>
+            <input type="radio" name="priority" id="formMediumPriority" value="Medium">
+            <label for="formMediumPriority">Medium</label>
+            <input type="radio" name="priority" id="formHighPriority" value="High">
+            <label for="formHighPriority">High</label>
+            <input type="submit" id="formSubmit" value="Add">
+        </form>
+
+    </div>
     <script src="main.js"></script>
 </body>
 </html>
