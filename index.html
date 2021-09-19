@@ -17,12 +17,12 @@
 
         <div id="projects"></div>
 
-        <button id="projectShowModal"><span class="material-icons">add</span></button>
+        <button id="projectShowModal" class="projectButton"><span class="material-icons">add</span></button>
         
         <div class="addProjectForm displayNone">
             <input type="text" id="projectTitle" placeholder="Title">
-            <button id="projectAdd"><span class="material-icons">done</span></button>
-            <button id="projectClose"><span class="material-icons">close</span></button>
+            <button id="projectClose" class="projectButton"><span class="material-icons">close</span></button>
+            <button id="projectAdd" class="projectButton"><span class="material-icons">done</span></button>
         </div>
 
         <div class="warningProjectMessage displayNone">Please fill the project title!</div>
@@ -32,7 +32,7 @@
 
         <div id="tasks"></div>
 
-        <button id="taskShowModal"><span class="material-icons">add</span></button>
+        <button id="taskShowModal" class="projectButton displayNone"><span class="material-icons">add</span></button>
 
         <div class="addTaskForm displayNone">
             <input type="text" name="title" id="formTitle" placeholder="Title">
@@ -40,14 +40,20 @@
             <label for="dueDate">Due Date:</label>
             <input type="date" name="dueDate" id="formDueDate">
             <label for="priority">Priority:</label>
-            <input type="radio" name="priority" id="formLowPriority" class="priorityRadio" value="Low" checked>
-            <label for="formLowPriority">Low</label>
-            <input type="radio" name="priority" id="formMediumPriority" class="priorityRadio" value="Medium">
-            <label for="formMediumPriority">Medium</label>
-            <input type="radio" name="priority" id="formHighPriority" class="priorityRadio" value="High">
-            <label for="formHighPriority">High</label>
-            <button id="taskAdd"><span class="material-icons">done</span></button>
-            <button id="taskClose"><span class="material-icons">close</span></button>
+            <div id="lowPriorityContainer">
+                <input type="radio" name="priority" id="formLowPriority" class="priorityRadio" value="Low" checked>
+                <label for="formLowPriority">Low</label>
+            </div>
+            <div id="mediumPriorityContainer">
+                <input type="radio" name="priority" id="formMediumPriority" class="priorityRadio" value="Medium">
+                <label for="formMediumPriority">Medium</label>
+            </div>
+            <div id="highPriorityContainer">
+                <input type="radio" name="priority" id="formHighPriority" class="priorityRadio" value="High">
+                <label for="formHighPriority">High</label>
+            </div>
+            <button id="taskClose" class="projectButton"><span class="material-icons">close</span></button>
+            <button id="taskAdd" class="projectButton"><span class="material-icons">done</span></button>
         </div>
 
         <div class="warningTaskMessage displayNone">Please fill the form!</div>

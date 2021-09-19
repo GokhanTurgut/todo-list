@@ -1,8 +1,15 @@
+:root {
+    --dark: #1B262C;
+    --dark-blue: #0F4C75;
+    --blue: #3282B8;
+    --light-blue: #BBE1FA;
+}
+
 body {
     margin: 0;
     min-height: 100vh;
     display: grid;
-    grid-template-columns: 15rem auto;
+    grid-template-columns: 16rem auto;
     grid-template-rows: 7rem auto;
     grid-template-areas: 
         "header header"
@@ -12,19 +19,186 @@ body {
 
 #headerArea {
     grid-area: header;
-    background-color: antiquewhite;
+    background-color: var(--dark-blue);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 3rem;
+}
+
+#headerArea > h1 {
+    color: var(--light-blue);
+    font-size: 3rem;
 }
 
 #projectsArea {
     grid-area: navigation;
-    background-color: rgb(216, 233, 212)
+    background-color: var(--blue);
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+#projectsArea > h2 {
+    color: var(--light-blue);
+    font-size: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid var(--light-blue);
+    width: 100%;
+}
+
+#projectShowModal {
+    align-self: center;
+    margin-bottom: 3rem;
+}
+
+.addProjectForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-content: center;
+    justify-items: center;
+}
+
+#projectTitle {
+    width: 13rem;
+    height: 2rem;
+    font-size: 1.5rem;
+    grid-column-end: span 2;
+    margin-bottom: 1rem;
+    background-color: var(--light-blue);
+    color: var(--dark);
+    border-radius: 5px;
+    border: none;
+}
+
+.projectContainer {
+    display: flex;
+    width: 13rem;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 2rem;
+    color: var(--light-blue);
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.projectContainer > div {
+    cursor: pointer;
+}
+
+.projectContainer > span {
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.projectContainer > div:hover {
+    color: var(--dark);
+}
+
+.projectContainer > span:hover {
+    color: var(--dark);
+}
+
+.warningProjectMessage , .warningTaskMessage {
+    margin-top: 2rem;
+    align-self: center;
+    font-size: 1.2rem;
+    color: var(--light-blue);
+    background-color: var(--dark-blue);
+    padding: .6rem;
+    border-radius: 7px;
 }
 
 #tasksArea {
     grid-area: tasks;
-    background-color: rgb(255, 238, 252);
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+#tasksArea > h2 {
+    font-size: 2rem;
+    color: var(--light-blue);
+    border-bottom: 3px solid var(--light-blue);
+    padding-bottom: 1rem;
+}
+
+#taskShowModal {
+    align-self: center;
+}
+
+.addTaskForm {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: center;
+    align-items: center;
+    color: var(--light-blue);
+}
+
+#formTitle {
+    grid-column: 1 / span 3;
+    background-color: var(--light-blue);
+    color: var(--dark);
+    border-radius: 5px;
+    border: none;
+    height: 1.5rem;
+    font-size: 1rem;
+}
+
+#formDescription {
+    grid-column: 4 / span 5;
+    background-color: var(--light-blue);
+    color: var(--dark);
+    border-radius: 5px;
+    border: none;
+    height: 1.5rem;
+    font-size: 1rem;
+}
+
+#formDueDate {
+    grid-column: 2 / span 2;
+    background-color: var(--light-blue);
+    color: var(--dark);
+    border-radius: 5px;
+    border: none;
+    height: 1.5rem;
+    font-size: 1rem;
+}
+
+#taskAdd {
+    grid-column: 5 / span 1;
+}
+
+#taskClose {
+    grid-column: 3 / span 1;
 }
 
 .displayNone {
     display: none;
+}
+
+.projectButton {
+    border-radius: 50%;
+    width: 3.5rem;
+    height: 3.5rem;
+    border: none;
+    background-color: var(--light-blue);
+    color: var(--dark);
+    cursor: pointer;
+}
+
+.projectButton:hover {
+    background-color: var(--dark);
+    color: var(--light-blue);
+}
+
+.projectButton > span {
+    font-size: 2.5rem;
 }
