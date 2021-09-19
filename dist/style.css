@@ -10,14 +10,21 @@ body {
         "navigation tasks";
 }
 
-#header {
+#headerArea {
     grid-area: header;
+    background-color: antiquewhite;
 }
 
-#projects {
+#projectsArea {
     grid-area: navigation;
+    background-color: rgb(216, 233, 212)
 }
 
-#tasks {
+#tasksArea {
     grid-area: tasks;
+    background-color: rgb(255, 238, 252);
+}
+
+.displayNone {
+    display: none;
 }
