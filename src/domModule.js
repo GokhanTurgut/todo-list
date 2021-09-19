@@ -5,7 +5,13 @@ import { format, parseISO } from 'date-fns'
 const DOM = (() => {
     const readProjectDOM = () => {
         const projectTitle = document.getElementById('projectTitle');
-        return [projectTitle.value];
+        const clearProjectData = () => {
+            projectTitle.value = '';
+        }
+        return {
+            title: projectTitle.value,
+            clearProjectData,
+        }
     }
 
     const projectsContainer = document.getElementById('projects');
@@ -14,7 +20,23 @@ const DOM = (() => {
         projectsContainer.appendChild(projectContainer);
         const title = document.createElement('div');
         title.innerText = project.title;
+        title.addEventListener('click', () => {
+            project.selection();
+            clearDOM(tasksContainer);
+            project.displayTasks();
+        })
         projectContainer.appendChild(title);
+        const deleteButton = document.createElement('span');
+        deleteButton.classList.add('material-icons');
+        deleteButton.innerText = 'delete';
+        deleteButton.addEventListener('click',() => {
+            clearDOM(tasksContainer);
+            project.delete();
+            clearDOM(projectsContainer);
+            project.display();
+            console.log(projectModule.getProjects());
+        })
+        projectContainer.appendChild(deleteButton);
     }
 
     const readTaskDOM = () => {
@@ -28,7 +50,20 @@ const DOM = (() => {
                 formPriority = formPriorityArray[i].value;
             }
         }
-        const clearData = () => {
+        
+        let formValues = [formTitle.value, formDescription.value, formDueDate.value, formPriority];
+        
+        const checkValues = () => {
+            let validCheck = false;
+            formValues.forEach((value) => {
+                if (value === '') {
+                    validCheck = true;
+                }
+            })
+            return validCheck;
+        }
+
+        const clearTaskData = () => {
             formTitle.value = '';
             formDescription.value = '';
             formDueDate.value = '';
@@ -36,9 +71,11 @@ const DOM = (() => {
                 formPriorityArray[i].checked = false;
             }
         }
+
         return {
-            formValues: [formTitle.value, formDescription.value, formDueDate.value, formPriority],
-            clearData
+            formValues,
+            checkValues,
+            clearTaskData,
         }
     }
             
@@ -56,26 +93,75 @@ const DOM = (() => {
         dueDate.innerText = format(parseISO(task.dueDate), 'dd/MM/yyyy');
         taskContainer.appendChild(dueDate);
         const priority = document.createElement('div');
-        priority.innerText = task.priority;
+        priority.classList.add('priority', `${task.priority}`);
         taskContainer.appendChild(priority);
-        const notes = document.createElement('div');
-        notes.innerText = task.notes;
-        taskContainer.appendChild(notes);
+        const notesBtn = document.createElement('span');
+        notesBtn.classList.add('material-icons');
+        notesBtn.innerText = 'edit_note';
+        notesBtn.addEventListener('click', () => {
+            notesInput.value = task.notes;
+            notesContainer.classList.toggle('displayNone');
+        });
+        taskContainer.appendChild(notesBtn);
         const status = document.createElement('div');
         status.innerText = task.status;
         taskContainer.appendChild(status);
+        const deleteButton = document.createElement('span');
+        deleteButton.classList.add('material-icons');
+        deleteButton.innerText = 'delete';
+        deleteButton.addEventListener('click', () => {
+            task.delete();
+            clearDOM(tasksContainer);
+            task.display();
+        })
+        taskContainer.appendChild(deleteButton);
+        const notesContainer = document.createElement('div');
+        notesContainer.classList.add('notesContainer', 'displayNone');
+        const notesInput = document.createElement('input');
+        notesInput.classList.add('notesInput');
+        const notesAddBtn = document.createElement('span');
+        notesAddBtn.classList.add('material-icons');
+        notesAddBtn.innerText = 'add';
+        notesAddBtn.addEventListener('click', () => {
+            task.notes = notesInput.value;
+        })
+        const notesCloseBtn = document.createElement('span');
+        notesCloseBtn.classList.add('material-icons');
+        notesCloseBtn.innerText = 'close';
+        notesCloseBtn.addEventListener('click', () => {
+            notesContainer.classList.toggle('displayNone');
+        })
+        notesContainer.appendChild(notesInput);
+        notesContainer.appendChild(notesAddBtn);
+        notesContainer.appendChild(notesCloseBtn);
+        taskContainer.appendChild(notesContainer);
     };
 
     const eventListeners = (() => {
         const addProjectBtn = document.getElementById('projectAdd');
+        const warningProjectMessage = document.querySelector('.warningProjectMessage');
         addProjectBtn.addEventListener('click', () => {
-        projectModule.createProject();
+        if (readProjectDOM().title === '') {
+            warningProjectMessage.classList.remove('displayNone');
+        }
+        else {
+            projectModule.createProject();
+            readProjectDOM().clearProjectData();
+            warningProjectMessage.classList.add('displayNone');
+        }
         })
         
         const addTaskBtn = document.getElementById('taskAdd');
+        const warningTaskMessage = document.querySelector('.warningTaskMessage');
         addTaskBtn.addEventListener('click', () => {
-        projectModule.createTask();
-        readTaskDOM().clearData();
+        if (readTaskDOM().checkValues()) {
+            warningTaskMessage.classList.remove('displayNone');
+        }
+        else {
+            projectModule.createTask();
+            readTaskDOM().clearTaskData();
+            warningTaskMessage.classList.add('displayNone');
+        }
         })
 
         const projectShowModal = document.getElementById('projectShowModal');
@@ -98,6 +184,12 @@ const DOM = (() => {
             addTaskForm.classList.toggle('displayNone');
         })
     })();
+
+    const clearDOM = (container) => {
+        while (container.firstChild) {
+            container.removeChild(container.lastChild);
+        }
+    }
 
     return {
         readProjectDOM,

@@ -13,28 +13,34 @@
         <h1>My Tasks</h1>
     </div>
     <div id="projectsArea">
+        <h2>Projects</h2>
+
         <div id="projects"></div>
 
         <button id="projectShowModal"><span class="material-icons">add</span></button>
         
-        <div class="addProjectForm">
+        <div class="addProjectForm displayNone">
             <input type="text" id="projectTitle" placeholder="Title">
             <button id="projectAdd"><span class="material-icons">done</span></button>
             <button id="projectClose"><span class="material-icons">close</span></button>
         </div>
+
+        <div class="warningProjectMessage displayNone">Please fill the project title!</div>
     </div>
     <div id="tasksArea">
+        <h2>Tasks</h2>
+
         <div id="tasks"></div>
 
         <button id="taskShowModal"><span class="material-icons">add</span></button>
 
-        <div class="addTaskForm">
+        <div class="addTaskForm displayNone">
             <input type="text" name="title" id="formTitle" placeholder="Title">
             <input type="text" name="description" id="formDescription" placeholder="Description">
             <label for="dueDate">Due Date:</label>
             <input type="date" name="dueDate" id="formDueDate">
             <label for="priority">Priority:</label>
-            <input type="radio" name="priority" id="formLowPriority" class="priorityRadio" value="Low">
+            <input type="radio" name="priority" id="formLowPriority" class="priorityRadio" value="Low" checked>
             <label for="formLowPriority">Low</label>
             <input type="radio" name="priority" id="formMediumPriority" class="priorityRadio" value="Medium">
             <label for="formMediumPriority">Medium</label>
@@ -44,6 +50,7 @@
             <button id="taskClose"><span class="material-icons">close</span></button>
         </div>
 
+        <div class="warningTaskMessage displayNone">Please fill the form!</div>
     </div>
     <script src="main.js"></script>
 </body>
