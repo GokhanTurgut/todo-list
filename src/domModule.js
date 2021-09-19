@@ -17,6 +17,7 @@ const DOM = (() => {
     const projectsContainer = document.getElementById('projects');
     const writeProjectDOM = project => {
         const projectContainer = document.createElement('div');
+        projectContainer.classList.add('projectContainer');
         projectsContainer.appendChild(projectContainer);
         const title = document.createElement('div');
         title.innerText = project.title;
@@ -34,9 +35,9 @@ const DOM = (() => {
             project.delete();
             clearDOM(projectsContainer);
             project.display();
-            console.log(projectModule.getProjects());
         })
         projectContainer.appendChild(deleteButton);
+        project.selection();
     }
 
     const readTaskDOM = () => {
@@ -82,6 +83,7 @@ const DOM = (() => {
     const tasksContainer = document.getElementById('tasks');
     const writeTaskDOM = task => {
         const taskContainer = document.createElement('div');
+        taskContainer.classList.add('taskContainer');
         tasksContainer.appendChild(taskContainer);
         const title = document.createElement('div');
         title.innerText = task.title;
@@ -148,6 +150,7 @@ const DOM = (() => {
             projectModule.createProject();
             readProjectDOM().clearProjectData();
             warningProjectMessage.classList.add('displayNone');
+            taskShowModal.classList.remove('displayNone');
         }
         })
         
@@ -169,9 +172,11 @@ const DOM = (() => {
         const projectClose = document.getElementById('projectClose');
         projectShowModal.addEventListener('click', () => {
             addProjectForm.classList.toggle('displayNone');
+            warningProjectMessage.classList.add('displayNone');
         })
         projectClose.addEventListener('click', () => {
             addProjectForm.classList.toggle('displayNone');
+            warningProjectMessage.classList.add('displayNone');
         })
 
         const taskShowModal = document.getElementById('taskShowModal');
@@ -183,6 +188,10 @@ const DOM = (() => {
         taskClose.addEventListener('click', () => {
             addTaskForm.classList.toggle('displayNone');
         })
+
+        return {
+
+        }
     })();
 
     const clearDOM = (container) => {
