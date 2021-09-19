@@ -6,29 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Tasks</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <div id="header">
+    <div id="headerArea">
         <h1>My Tasks</h1>
     </div>
-    <div id="projects">
+    <div id="projectsArea">
+        <div id="projects"></div>
+
+        <button id="projectShowModal"><span class="material-icons">add</span></button>
         
+        <div class="addProjectForm">
+            <input type="text" id="projectTitle" placeholder="Title">
+            <button id="projectAdd"><span class="material-icons">done</span></button>
+            <button id="projectClose"><span class="material-icons">close</span></button>
+        </div>
     </div>
-    <div id="tasks">
-        <form class="taskForm">
-            <input type="text" name="title" id="formTitle" placeholder="Title" required>
+    <div id="tasksArea">
+        <div id="tasks"></div>
+
+        <button id="taskShowModal"><span class="material-icons">add</span></button>
+
+        <div class="addTaskForm">
+            <input type="text" name="title" id="formTitle" placeholder="Title">
             <input type="text" name="description" id="formDescription" placeholder="Description">
             <label for="dueDate">Due Date:</label>
             <input type="date" name="dueDate" id="formDueDate">
             <label for="priority">Priority:</label>
-            <input type="radio" name="priority" id="formLowPriority" value="Low" required>
+            <input type="radio" name="priority" id="formLowPriority" class="priorityRadio" value="Low">
             <label for="formLowPriority">Low</label>
-            <input type="radio" name="priority" id="formMediumPriority" value="Medium">
+            <input type="radio" name="priority" id="formMediumPriority" class="priorityRadio" value="Medium">
             <label for="formMediumPriority">Medium</label>
-            <input type="radio" name="priority" id="formHighPriority" value="High">
+            <input type="radio" name="priority" id="formHighPriority" class="priorityRadio" value="High">
             <label for="formHighPriority">High</label>
-            <input type="submit" id="formSubmit" value="Add">
-        </form>
+            <button id="taskAdd"><span class="material-icons">done</span></button>
+            <button id="taskClose"><span class="material-icons">close</span></button>
+        </div>
 
     </div>
     <script src="main.js"></script>
