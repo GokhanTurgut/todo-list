@@ -20,11 +20,14 @@ const DOM = (() => {
         projectContainer.classList.add('projectContainer');
         projectsContainer.appendChild(projectContainer);
         const title = document.createElement('div');
+        title.classList.add('projectTitle');
         title.innerText = project.title;
         title.addEventListener('click', () => {
             project.selection();
             clearDOM(tasksContainer);
             project.displayTasks();
+            projectTitleColorResetter();
+            title.classList.add('selected');
         })
         projectContainer.appendChild(title);
         const deleteButton = document.createElement('span');
@@ -38,6 +41,15 @@ const DOM = (() => {
         })
         projectContainer.appendChild(deleteButton);
         project.selection();
+
+        const projectTitleColorResetter = () => {
+            let projectNodes = projectsContainer.childNodes;
+            for (let i = 0; i < projectNodes.length; i++) {
+                projectNodes[i].firstChild.classList.remove('selected');
+            }
+        }
+        projectTitleColorResetter();
+        title.classList.add('selected');
     }
 
     const readTaskDOM = () => {
@@ -86,19 +98,22 @@ const DOM = (() => {
         taskContainer.classList.add('taskContainer');
         tasksContainer.appendChild(taskContainer);
         const title = document.createElement('div');
+        title.classList.add('taskTitle');
         title.innerText = task.title;
         taskContainer.appendChild(title);
         const description = document.createElement('div');
+        description.classList.add('taskDescription');
         description.innerText = task.description;
         taskContainer.appendChild(description);
         const dueDate = document.createElement('div');
+        dueDate.classList.add('taskDueDate');
         dueDate.innerText = format(parseISO(task.dueDate), 'dd/MM/yyyy');
         taskContainer.appendChild(dueDate);
         const priority = document.createElement('div');
         priority.classList.add('priority', `${task.priority}`);
         taskContainer.appendChild(priority);
         const notesBtn = document.createElement('span');
-        notesBtn.classList.add('material-icons');
+        notesBtn.classList.add('material-icons', 'taskNotesBtn');
         notesBtn.innerText = 'edit_note';
         notesBtn.addEventListener('click', () => {
             notesInput.value = task.notes;
@@ -106,10 +121,13 @@ const DOM = (() => {
         });
         taskContainer.appendChild(notesBtn);
         const status = document.createElement('div');
-        status.innerText = task.status;
+        status.classList.add(`${task.status}`);
+        status.addEventListener('click', () => {
+            status.classList.toggle('done');
+        })
         taskContainer.appendChild(status);
         const deleteButton = document.createElement('span');
-        deleteButton.classList.add('material-icons');
+        deleteButton.classList.add('material-icons', 'taskDeleteBtn');
         deleteButton.innerText = 'delete';
         deleteButton.addEventListener('click', () => {
             task.delete();
@@ -122,13 +140,13 @@ const DOM = (() => {
         const notesInput = document.createElement('input');
         notesInput.classList.add('notesInput');
         const notesAddBtn = document.createElement('span');
-        notesAddBtn.classList.add('material-icons');
-        notesAddBtn.innerText = 'add';
+        notesAddBtn.classList.add('material-icons', 'notesAddBtn');
+        notesAddBtn.innerText = 'done';
         notesAddBtn.addEventListener('click', () => {
             task.notes = notesInput.value;
         })
         const notesCloseBtn = document.createElement('span');
-        notesCloseBtn.classList.add('material-icons');
+        notesCloseBtn.classList.add('material-icons', 'notesCloseBtn');
         notesCloseBtn.innerText = 'close';
         notesCloseBtn.addEventListener('click', () => {
             notesContainer.classList.toggle('displayNone');
@@ -184,9 +202,11 @@ const DOM = (() => {
         const taskClose = document.getElementById('taskClose');
         taskShowModal.addEventListener('click', () => {
             addTaskForm.classList.toggle('displayNone');
+            warningTaskMessage.classList.add('displayNone');
         })
         taskClose.addEventListener('click', () => {
             addTaskForm.classList.toggle('displayNone');
+            warningTaskMessage.classList.add('displayNone');
         })
 
         return {
