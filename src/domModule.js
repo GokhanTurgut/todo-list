@@ -167,6 +167,7 @@ const DOM = (() => {
         else {
             projectModule.createProject();
             readProjectDOM().clearProjectData();
+            clearDOM(tasksContainer);
             warningProjectMessage.classList.add('displayNone');
             taskShowModal.classList.remove('displayNone');
         }
