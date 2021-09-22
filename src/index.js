@@ -5,33 +5,6 @@ class Project {
         this.tasks = [];
         this.selected = selected;
     }
-
-    delete() {
-        projectModule.getProjects().forEach((project, index) => {
-            if (project.title === this.title) {
-                projectModule.getProjects().splice(index, 1);
-            }
-        })
-    }
-
-    display() {
-        projectModule.getProjects().forEach((project) => {
-            DOM.writeProjectDOM(project);
-        })
-    }
-
-    selection() {
-        projectModule.getProjects().forEach((project) => {
-            project.selected = false;
-            this.selected = true;
-        })
-    }
-
-    displayTasks() {
-        this.tasks.forEach((task) => {
-            DOM.writeTaskDOM(task);
-        })
-    }
 }
 class Task {
     constructor(title, description, dueDate, priority, project, notes = '', status = false) {
@@ -42,27 +15,6 @@ class Task {
         this.project = project;
         this.notes = notes;
         this.status = status;
-    }
-    
-    projectIndex = null;
-
-    delete() {
-        projectModule.getProjects().forEach((project, index) => {
-            if (project.title === this.project) {
-                this.projectIndex = index;
-            }
-        })
-        projectModule.getProjects()[this.projectIndex].tasks.forEach((task, index) => {
-            if (task.title === this.title) {
-                projectModule.getProjects()[this.projectIndex].tasks.splice(index, 1);
-            }
-        })
-    }
-
-    display() {
-        projectModule.getProjects()[this.projectIndex].tasks.forEach((task) => {
-            DOM.writeTaskDOM(task);
-        })
     }
 }
 
@@ -77,6 +29,43 @@ const projectModule = (() => {
         projectsArray.push(new Project(DOM.readProjectDOM().title, false));
         DOM.writeProjectDOM(projectsArray[projectsArray.length - 1]);
     }
+
+    const projectDelete = (projectTitle) => {
+        projectsArray.forEach((project, index) => {
+            if (project.title === projectTitle) {
+                projectsArray.splice(index, 1);
+            }
+        })
+    }
+
+    const projectDisplay = () => {
+        projectsArray.forEach((project) => {
+            DOM.writeProjectDOM(project);
+        })
+    }
+
+    const projectSelectionChecker = () => {
+        let projectSelected = false;
+
+        projectsArray.forEach((project) => {
+            if (project.selected === true) {
+                projectSelected = true;
+            }
+        })
+        return projectSelected;
+    }
+
+    const projectSelectionResetter = () => {
+        projectsArray.forEach((project) => {
+            project.selected = false;
+        })
+    }
+
+    const projectDisplayTasks = (projectTasks) => {
+        projectTasks.forEach((task) => {
+            DOM.writeTaskDOM(task);
+        })
+    }
     
     const createTask = () => {
         projectsArray.forEach((project) => {
@@ -87,10 +76,57 @@ const projectModule = (() => {
         })
     }
 
+    const taskDelete = (projectTitle, taskTitle) => {
+        let projectIndex;
+        projectsArray.forEach((project, index) => {
+            if (project.title === projectTitle) {
+                projectIndex = index;
+            }
+        })
+        projectsArray[projectIndex].tasks.forEach((task, index) => {
+            if (task.title === taskTitle) {
+                projectsArray[projectIndex].tasks.splice(index, 1);
+            }
+        })
+    }
+
+    const taskDisplay = (projectTitle) => {
+        let projectIndex;
+        projectsArray.forEach((project, index) => {
+            if (project.title === projectTitle) {
+                projectIndex = index;
+            }
+        })
+        projectsArray[projectIndex].tasks.forEach((task) => {
+            DOM.writeTaskDOM(task);
+        })
+    }
+
+    const localStorageSave = () => {
+        localStorage.clear();
+        localStorage.setItem('projects', JSON.stringify(projectsArray));
+    }
+
+    const localStorageLoad = (() => {
+        if (JSON.parse(localStorage.getItem('projects')) !== null) {
+            projectsArray = JSON.parse(localStorage.getItem('projects'));
+        }
+    })();
+
+
+
     return {
         getProjects,
         createProject,
+        projectDelete,
+        projectDisplay,
+        projectSelectionChecker,
+        projectSelectionResetter,
+        projectDisplayTasks,
         createTask,
+        taskDelete,
+        taskDisplay,
+        localStorageSave,
     }
 })();
 

@@ -23,11 +23,13 @@ const DOM = (() => {
         title.classList.add('projectTitle');
         title.innerText = project.title;
         title.addEventListener('click', () => {
-            project.selection();
+            projectModule.projectSelectionResetter();
             clearDOM(tasksContainer);
-            project.displayTasks();
+            projectModule.projectDisplayTasks(project.tasks);
             projectTitleColorResetter();
             title.classList.add('selected');
+            project.selected = true;
+            projectModule.localStorageSave();
         })
         projectContainer.appendChild(title);
         const deleteButton = document.createElement('span');
@@ -35,12 +37,14 @@ const DOM = (() => {
         deleteButton.innerText = 'delete';
         deleteButton.addEventListener('click',() => {
             clearDOM(tasksContainer);
-            project.delete();
+            projectModule.projectDelete(project.title);
             clearDOM(projectsContainer);
-            project.display();
+            projectModule.projectDisplay();
+            projectModule.localStorageSave();
         })
         projectContainer.appendChild(deleteButton);
-        project.selection();
+        projectModule.projectSelectionResetter();
+        project.selected = true;
 
         const projectTitleColorResetter = () => {
             let projectNodes = projectsContainer.childNodes;
@@ -121,18 +125,30 @@ const DOM = (() => {
         });
         taskContainer.appendChild(notesBtn);
         const status = document.createElement('div');
-        status.classList.add(`${task.status}`);
+        status.classList.add('status');
+        if (task.status === true) {
+            status.classList.add('true');
+        }
         status.addEventListener('click', () => {
-            status.classList.toggle('done');
+            if (task.status === true) {
+                task.status = false;
+                status.classList.remove('true');
+            }
+            else if (task.status === false) {
+                task.status = true;
+                status.classList.add('true');
+            }
+            projectModule.localStorageSave();
         })
         taskContainer.appendChild(status);
         const deleteButton = document.createElement('span');
         deleteButton.classList.add('material-icons', 'taskDeleteBtn');
         deleteButton.innerText = 'delete';
         deleteButton.addEventListener('click', () => {
-            task.delete();
+            projectModule.taskDelete(task.project, task.title);
             clearDOM(tasksContainer);
-            task.display();
+            projectModule.taskDisplay(task.project);
+            projectModule.localStorageSave();
         })
         taskContainer.appendChild(deleteButton);
         const notesContainer = document.createElement('div');
@@ -144,6 +160,7 @@ const DOM = (() => {
         notesAddBtn.innerText = 'done';
         notesAddBtn.addEventListener('click', () => {
             task.notes = notesInput.value;
+            projectModule.localStorageSave();
         })
         const notesCloseBtn = document.createElement('span');
         notesCloseBtn.classList.add('material-icons', 'notesCloseBtn');
@@ -169,20 +186,27 @@ const DOM = (() => {
             readProjectDOM().clearProjectData();
             clearDOM(tasksContainer);
             warningProjectMessage.classList.add('displayNone');
-            taskShowModal.classList.remove('displayNone');
+            projectModule.localStorageSave();
         }
         })
         
         const addTaskBtn = document.getElementById('taskAdd');
         const warningTaskMessage = document.querySelector('.warningTaskMessage');
+        const warningSelectionMessage = document.querySelector('.warningSelectionMessage');
         addTaskBtn.addEventListener('click', () => {
         if (readTaskDOM().checkValues()) {
             warningTaskMessage.classList.remove('displayNone');
+        }
+        else if (!projectModule.projectSelectionChecker()) {
+            warningTaskMessage.classList.add('displayNone');
+            warningSelectionMessage.classList.remove('displayNone');
         }
         else {
             projectModule.createTask();
             readTaskDOM().clearTaskData();
             warningTaskMessage.classList.add('displayNone');
+            warningSelectionMessage.classList.add('displayNone');
+            projectModule.localStorageSave();
         }
         })
 
@@ -210,9 +234,12 @@ const DOM = (() => {
             warningTaskMessage.classList.add('displayNone');
         })
 
-        return {
-
-        }
+        window.addEventListener('load', () => {
+            projectModule.projectDisplay();
+            if (projectModule.getProjects().length > 0) {
+                projectModule.projectDisplayTasks(projectModule.getProjects()[projectModule.getProjects().length - 1].tasks);
+            }
+          });
     })();
 
     const clearDOM = (container) => {
