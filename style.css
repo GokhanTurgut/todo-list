@@ -44,7 +44,7 @@ body {
 #projectsArea > h2 {
     color: var(--light-blue);
     font-size: 2rem;
-    padding-bottom: 1rem;
+    padding-bottom: 1.65rem;
     border-bottom: 3px solid var(--light-blue);
     width: 100%;
 }
@@ -130,11 +130,56 @@ body {
     padding: 1rem;
 }
 
-#tasksArea > h2 {
+.tasksInfo {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid var(--light-blue);
+    margin-bottom: 2rem;
+}
+
+.taskFilter {
+    display: flex;
+    align-items: center;
+    color: var(--light-blue);
+    font-size: 1.2rem;
+}
+
+.taskFilter div {
+    margin-left: 1rem;
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: .3rem;
+    cursor: pointer;
+    border-radius: 10%;
+}
+
+.taskFilter div:hover {
+    color: var(--blue);
+}
+
+.taskSort {
+    display: flex;
+    align-items: center;
+    color: var(--light-blue);
+    font-size: 1.2rem;
+}
+
+.taskSort div {
+    margin-left: 1rem;
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: .3rem;
+    cursor: pointer;
+    border-radius: 10%;
+}
+
+.taskSort div:hover {
+    color: var(--blue);
+}
+
+.tasksInfo > h2 {
     font-size: 2rem;
     color: var(--light-blue);
-    border-bottom: 3px solid var(--light-blue);
-    padding-bottom: 1rem;
 }
 
 .taskContainer {
@@ -150,6 +195,10 @@ body {
     border-radius: 10px;
     padding: .5rem;
     font-size: 1rem;
+}
+
+.taskContainer:hover {
+    border: 3px solid var(--blue);
 }
 
 .taskTitle {
