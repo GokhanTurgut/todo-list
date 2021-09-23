@@ -1,4 +1,5 @@
 import DOM from "./domModule";
+import { compareAsc, parseISO, formatDistanceToNowStrict } from "date-fns";
 class Project {
     constructor(title, selected) {
         this.title = title;
@@ -25,6 +26,8 @@ const projectModule = (() => {
         return projectsArray;
     }
     
+    // Project Functions
+
     const createProject = () => {
         projectsArray.push(new Project(DOM.readProjectDOM().title, false));
         DOM.writeProjectDOM(projectsArray[projectsArray.length - 1]);
@@ -67,6 +70,67 @@ const projectModule = (() => {
         })
     }
     
+    // Task Functions
+
+    const taskTodayFilter = () => {
+        projectsArray.forEach((project) => {
+            if (project.selected) {
+                let todaysTasks = project.tasks.filter((task) => {
+                    let remainingDays = formatDistanceToNowStrict(parseISO(task.dueDate), {
+                        unit: 'day',
+                        roundingMethod: 'floor'
+                    }).split(' ');
+                    return remainingDays[0] === '0';
+                })
+                projectDisplayTasks(todaysTasks);
+            }
+        })
+    }
+
+    const taskWeekFilter = () => {
+        projectsArray.forEach((project) => {
+            if (project.selected) {
+                let weeksTasks = project.tasks.filter((task) => {
+                    let remainingDays = formatDistanceToNowStrict(parseISO(task.dueDate), {
+                        unit: 'day',
+                        roundingMethod: 'floor'
+                    }).split(' ');
+                    return Number(remainingDays[0]) < 7;
+                })
+                projectDisplayTasks(weeksTasks);
+            }
+        })
+    }
+
+    const taskSortByPriority = () => {
+        projectsArray.forEach((project) => {
+            if (project.selected) {
+                let highPriority = project.tasks.filter((task) => {
+                    return task.priority === 'High';
+                });
+                let mediumPriority = project.tasks.filter((task) => {
+                    return task.priority === 'Medium';
+                });
+                let lowPriority = project.tasks.filter((task) => {
+                    return task.priority === 'Low';
+                });
+                project.tasks = [...highPriority, ...mediumPriority, ...lowPriority];
+                projectDisplayTasks(project.tasks);     
+            }
+        })   
+    }
+
+    const taskSortByDate = () => {
+        projectsArray.forEach((project) => {
+            if (project.selected) {
+                project.tasks = project.tasks.sort((a, b) => {
+                    return compareAsc(parseISO(a.dueDate), parseISO(b.dueDate));
+                });
+                projectDisplayTasks(project.tasks);     
+            }
+        })    
+    }
+
     const createTask = () => {
         projectsArray.forEach((project) => {
             if (project.selected) {
@@ -123,6 +187,10 @@ const projectModule = (() => {
         projectSelectionChecker,
         projectSelectionResetter,
         projectDisplayTasks,
+        taskTodayFilter,
+        taskWeekFilter,
+        taskSortByPriority,
+        taskSortByDate,
         createTask,
         taskDelete,
         taskDisplay,

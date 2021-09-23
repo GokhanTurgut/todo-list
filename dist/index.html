@@ -7,6 +7,7 @@
     <title>My Tasks</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="shortcut icon" href="images/icon.png" type="image/x-icon">
 </head>
 <body>
     <div id="headerArea">
@@ -28,7 +29,19 @@
         <div class="warningProjectMessage displayNone">Please fill the project title!</div>
     </div>
     <div id="tasksArea">
-        <h2>Tasks</h2>
+        <div class="tasksInfo">
+            <h2>Tasks</h2>
+            <div class="taskFilter">
+                Filter:
+                <div id="dayFilter">Day</div>
+                <div id="weekFilter">Week</div>
+            </div>
+            <div class="taskSort">
+                Sort:
+                <div id="dateSort">Date</div>
+                <div id="prioritySort">Priority</div>
+            </div>
+        </div>
 
         <div id="tasks"></div>
 

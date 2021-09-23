@@ -189,6 +189,27 @@ const DOM = (() => {
             projectModule.localStorageSave();
         }
         })
+
+        const dayFilterBtn = document.getElementById('dayFilter');
+        dayFilterBtn.addEventListener('click', () => {
+            clearDOM(tasksContainer);
+            projectModule.taskTodayFilter();
+        })
+        const weekFilterBtn = document.getElementById('weekFilter');
+        weekFilterBtn.addEventListener('click', () => {
+            clearDOM(tasksContainer);
+            projectModule.taskWeekFilter();
+        })
+        const prioritySortBtn = document.getElementById('prioritySort');
+        prioritySortBtn.addEventListener('click', () => {
+            clearDOM(tasksContainer);
+            projectModule.taskSortByPriority();
+        })
+        const dateSortBtn = document.getElementById('dateSort');
+        dateSortBtn.addEventListener('click', () => {
+            clearDOM(tasksContainer);
+            projectModule.taskSortByDate();
+        })
         
         const addTaskBtn = document.getElementById('taskAdd');
         const warningTaskMessage = document.querySelector('.warningTaskMessage');
