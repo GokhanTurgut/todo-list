@@ -18,9 +18,11 @@
   "homepage": "https://github.com/GokhanTurgut/todo-list#readme",
   "devDependencies": {
     "webpack": "^5.52.1",
-    "webpack-cli": "^4.8.0"
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.2.1"
   },
   "dependencies": {
-    "date-fns": "^2.24.0"
+    "date-fns": "^2.24.0",
+    "firebase": "^9.0.2"
   }
 }

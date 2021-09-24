@@ -260,7 +260,7 @@ const DOM = (() => {
             if (projectModule.getProjects().length > 0) {
                 projectModule.projectDisplayTasks(projectModule.getProjects()[projectModule.getProjects().length - 1].tasks);
             }
-          });
+        });
     })();
 
     const clearDOM = (container) => {

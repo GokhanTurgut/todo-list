@@ -1,5 +1,8 @@
 import DOM from "./domModule";
 import { compareAsc, parseISO, formatDistanceToNowStrict } from "date-fns";
+import { initializeApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
 class Project {
     constructor(title, selected) {
         this.title = title;
@@ -177,7 +180,101 @@ const projectModule = (() => {
         }
     })();
 
+    // Firebase Cloud Supports
 
+    const firebaseConfig = {
+        apiKey: "AIzaSyCydJ72CM0rPgZRfrtDkL1MhcQFBBbnVPs",
+        authDomain: "mytasks-4e27b.firebaseapp.com",
+        projectId: "mytasks-4e27b",
+        storageBucket: "mytasks-4e27b.appspot.com",
+        messagingSenderId: "36200884378",
+        appId: "1:36200884378:web:82a65fff4f074404789723",
+        measurementId: "G-BHDQRCL3FN"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+    const db = getFirestore(app);
+
+    let currentUser;
+    
+    const googleSignIn = () => {
+        signInWithPopup(auth, provider).then((result) => {
+            console.log(result);
+            currentUser = result.user;
+        }).catch((err) => {
+            console.error(err);
+        });
+    }
+
+    const googleSignOut = () => {
+        signOut(auth).then(() => {
+            currentUser = undefined;
+            console.log('User sign out!')
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
+    const authStateChecker = (() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                userInfoUpdater(currentUser);
+                signInShow();
+                console.log('There is user.');
+            }
+            else {
+                currentUser = undefined;
+                userInfoUpdater(currentUser);
+                signOutShow();
+                console.log('There is no user.');
+            }
+        })
+    })()
+
+    const dataBaseSet = () => {
+        if (currentUser) {
+            setDoc(doc(db, 'users', currentUser), {userProjects: projectsArray});
+        }
+    }
+
+    const signInGoogleBtn = document.getElementById('userSignIn');
+    signInGoogleBtn.addEventListener('click', () => {
+        projectModule.googleSignIn();
+    })
+    const signOutBtn = document.getElementById('userSignOut');
+    signOutBtn.addEventListener('click', () => {
+        projectModule.googleSignOut();
+    })
+
+    const signInShow = () => {
+        signInGoogleBtn.classList.add('displayNone');
+        signOutBtn.classList.remove('displayNone');
+    }
+
+    const signOutShow = () => {
+        signInGoogleBtn.classList.remove('displayNone');
+        signOutBtn.classList.add('displayNone');
+    }
+
+    const userInfoUpdater = (user) => {
+        const userWelcome = document.getElementById('userWelcome');
+        const userImage = document.getElementById('userImage');
+        if (user) {
+            userWelcome.innerText = `Welcome, ${user.displayName}`;
+            userWelcome.classList.remove('displayNone');
+            userImage.src = user.photoURL;
+            userImage.classList.remove('displayNone');
+        }
+        else {
+            userWelcome.innerText = ``;
+            userWelcome.classList.add('displayNone');
+            userImage.src = '';
+            userImage.classList.add('displayNone');
+        }
+    }
+    
 
     return {
         getProjects,
@@ -195,6 +292,8 @@ const projectModule = (() => {
         taskDelete,
         taskDisplay,
         localStorageSave,
+        googleSignIn,
+        googleSignOut,
     }
 })();
 
