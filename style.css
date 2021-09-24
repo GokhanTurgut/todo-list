@@ -31,6 +31,36 @@ body {
     font-size: 3rem;
 }
 
+.rightSideHeader {
+    display: flex;
+    align-items: center;
+}
+
+#userWelcome {
+    color: var(--light-blue);
+}
+
+#userImage {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+}
+
+.rightSideHeader > * {
+    margin-left: 2rem;
+}
+
+#githubLogo {
+    width: 32px;
+    height: 32px;
+}
+
+#githubLogo:hover {
+    width: 40px;
+    height: 40px;
+}
+
+
 #projectsArea {
     grid-area: navigation;
     background-color: var(--blue);
