@@ -39,7 +39,7 @@ const DOM = (() => {
         deleteButton.addEventListener('click',() => {
             clearTasksContainer();
             projectModule.projectDelete(project.title);
-            clearprojectsContainer();
+            clearProjectsContainer();
             projectModule.projectDisplay();
             saveData();
         })
