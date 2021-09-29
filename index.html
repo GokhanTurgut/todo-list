@@ -6,17 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Tasks</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="images/icon.png" type="image/x-icon">
 </head>
 <body>
     <div id="headerArea">
         <h1>My Tasks</h1>
         <div class="rightSideHeader">
+            <div id="localStorageActive" class="localStorageMessage displayNone">Local Storage Active</div>
+            <div id="localStorageDisabled" class="localStorageMessage displayNone">Local Storage Disabled</div>
+            <div id="seperationBlock"></div>
             <div id="userWelcome" class="displayNone"></div>
             <img id="userImage" class="displayNone" src="" alt="User Image">
             <button class="userBtn displayNone" id="userSignOut">Sign Out</button>
-            <button class="userBtn" id="userSignIn">Sign in with Google</button>
+            <button class="userBtn displayNone" id="userSignIn">Sign in with Google</button>
             <a href="https://github.com/GokhanTurgut" target="_blank"><img id="githubLogo" src="images/GitHub-Mark-64px.png" alt="GitHub Logo"></a>
         </div>
     </div>
