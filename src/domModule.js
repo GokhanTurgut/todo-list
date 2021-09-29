@@ -1,5 +1,6 @@
 import projectModule from "./index.js"
 import { format, parseISO } from 'date-fns'
+import firebaseContainer from "./firebaseModule.js";
 
 
 const DOM = (() => {
@@ -24,23 +25,23 @@ const DOM = (() => {
         title.innerText = project.title;
         title.addEventListener('click', () => {
             projectModule.projectSelectionResetter();
-            clearDOM(tasksContainer);
+            clearTasksContainer();
             projectModule.projectDisplayTasks(project.tasks);
             projectTitleColorResetter();
             title.classList.add('selected');
             project.selected = true;
-            projectModule.localStorageSave();
+            saveData();
         })
         projectContainer.appendChild(title);
         const deleteButton = document.createElement('span');
         deleteButton.classList.add('material-icons');
         deleteButton.innerText = 'delete';
         deleteButton.addEventListener('click',() => {
-            clearDOM(tasksContainer);
+            clearTasksContainer();
             projectModule.projectDelete(project.title);
-            clearDOM(projectsContainer);
+            clearprojectsContainer();
             projectModule.projectDisplay();
-            projectModule.localStorageSave();
+            saveData();
         })
         projectContainer.appendChild(deleteButton);
         projectModule.projectSelectionResetter();
@@ -138,7 +139,7 @@ const DOM = (() => {
                 task.status = true;
                 status.classList.add('true');
             }
-            projectModule.localStorageSave();
+            saveData();
         })
         taskContainer.appendChild(status);
         const deleteButton = document.createElement('span');
@@ -146,9 +147,9 @@ const DOM = (() => {
         deleteButton.innerText = 'delete';
         deleteButton.addEventListener('click', () => {
             projectModule.taskDelete(task.project, task.title);
-            clearDOM(tasksContainer);
+            clearTasksContainer();
             projectModule.taskDisplay(task.project);
-            projectModule.localStorageSave();
+            saveData();
         })
         taskContainer.appendChild(deleteButton);
         const notesContainer = document.createElement('div');
@@ -160,7 +161,7 @@ const DOM = (() => {
         notesAddBtn.innerText = 'done';
         notesAddBtn.addEventListener('click', () => {
             task.notes = notesInput.value;
-            projectModule.localStorageSave();
+            saveData();
         })
         const notesCloseBtn = document.createElement('span');
         notesCloseBtn.classList.add('material-icons', 'notesCloseBtn');
@@ -184,30 +185,30 @@ const DOM = (() => {
         else {
             projectModule.createProject();
             readProjectDOM().clearProjectData();
-            clearDOM(tasksContainer);
+            clearTasksContainer();
             warningProjectMessage.classList.add('displayNone');
-            projectModule.localStorageSave();
+            saveData();
         }
         })
 
         const dayFilterBtn = document.getElementById('dayFilter');
         dayFilterBtn.addEventListener('click', () => {
-            clearDOM(tasksContainer);
+            clearTasksContainer();
             projectModule.taskTodayFilter();
         })
         const weekFilterBtn = document.getElementById('weekFilter');
         weekFilterBtn.addEventListener('click', () => {
-            clearDOM(tasksContainer);
+            clearTasksContainer();
             projectModule.taskWeekFilter();
         })
         const prioritySortBtn = document.getElementById('prioritySort');
         prioritySortBtn.addEventListener('click', () => {
-            clearDOM(tasksContainer);
+            clearTasksContainer();
             projectModule.taskSortByPriority();
         })
         const dateSortBtn = document.getElementById('dateSort');
         dateSortBtn.addEventListener('click', () => {
-            clearDOM(tasksContainer);
+            clearTasksContainer();
             projectModule.taskSortByDate();
         })
         
@@ -227,7 +228,7 @@ const DOM = (() => {
             readTaskDOM().clearTaskData();
             warningTaskMessage.classList.add('displayNone');
             warningSelectionMessage.classList.add('displayNone');
-            projectModule.localStorageSave();
+            saveData();
         }
         })
 
@@ -254,18 +255,26 @@ const DOM = (() => {
             addTaskForm.classList.toggle('displayNone');
             warningTaskMessage.classList.add('displayNone');
         })
-
-        window.addEventListener('load', () => {
-            projectModule.projectDisplay();
-            if (projectModule.getProjects().length > 0) {
-                projectModule.projectDisplayTasks(projectModule.getProjects()[projectModule.getProjects().length - 1].tasks);
-            }
-        });
     })();
 
-    const clearDOM = (container) => {
-        while (container.firstChild) {
-            container.removeChild(container.lastChild);
+    const clearProjectsContainer = () => {
+        while (projectsContainer.firstChild) {
+            projectsContainer.removeChild(projectsContainer.lastChild);
+        }
+    }
+
+    const clearTasksContainer = () => {
+        while (tasksContainer.firstChild) {
+            tasksContainer.removeChild(tasksContainer.lastChild);
+        }
+    }
+
+    const saveData = () => {
+        if (firebaseContainer.getCurrentUser()) {
+            firebaseContainer.dataBaseSet();
+        }
+        else {
+            projectModule.localStorageSave();
         }
     }
 
@@ -274,6 +283,8 @@ const DOM = (() => {
         writeProjectDOM,
         writeTaskDOM,
         readTaskDOM,
+        clearProjectsContainer,
+        clearTasksContainer,
     }
 })();
 
